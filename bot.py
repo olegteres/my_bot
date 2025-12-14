@@ -43,6 +43,7 @@ async def program(update: Update, context: ContextTypes.DEFAULT_TYPE):
         "🏢 Реальные задачи бизнеса\n\n"
         "⏱ Длительность: 1–3 месяца в удобном темпе\n\n"
         "🎯 Итог: готовое резюме и навыки для работы на зарплату от 100 тыс./мес.\n\n"
+        "📃 <a href=\"https://disk.yandex.ru/i/AXcGBPEQu97cbg\">Скачать программу</a>\n\n"
         "👉 Ознакомительный урок — /lesson\n"
         "🎁 То, что отличает этот курс — навык эффективного обучения, смотрите в подарках: /gift\n"
         "↪️ Главное меню — /start"
@@ -50,12 +51,6 @@ async def program(update: Update, context: ContextTypes.DEFAULT_TYPE):
 
     # отправляем текст
     await update.message.reply_text(text, parse_mode=ParseMode.HTML)
-
-    # отправляем pdf-файл
-    await update.message.reply_document(
-        InputFile("Программа курса.pdf"),
-        filename="Программа курса.pdf"
-    )
 
 
 # ----- /lesson -----
@@ -125,6 +120,7 @@ async def howtopay(update: Update, context: ContextTypes.DEFAULT_TYPE):
         "🔥 <b>Как оплатить</b>\n\n"
         "Оплата принимается:\n"
         "💳 Карта (СБП / Visa / Mastercard) — просто отсканируйте QR-код ниже\n"
+        "🫰 <a href=\"https://disk.yandex.ru/i/IrTlb3CTNBh3Zg\">Открыть QR-код</a>\n\n"
         "💼 Счёт на ИП или юр.лицо\n"
         "🌍 Зарубежные банки\n\n"
         "Если что-то не получается, напишите мне: 👉 <a href=\"https://t.me/olegtereschenko1\">в Telegram</a>\n"
@@ -134,15 +130,13 @@ async def howtopay(update: Update, context: ContextTypes.DEFAULT_TYPE):
      # Сначала отправляем текст
     await update.message.reply_text(text, parse_mode=ParseMode.HTML)
 
-    await update.message.reply_photo(InputFile("qr.png"))
-
 
 # ----- /gift -----
 async def gift(update: Update, context: ContextTypes.DEFAULT_TYPE):
     text = (
         "🎁 <b>Подарочные материалы</b>\n\n"
         "🎯 Бонусный блок курса - Привычка учиться. Навык, который гарантирует достижение вашей цели:\n"
-        "📌 <a href=\"https://docs.google.com/document/d/1PBDUuAvIWb_IM9oBn7EnAbbC98tFq-6i_xA9k4f9PlM\">Скачать</a>\n\n"
+        "📃 <a href=\"https://disk.yandex.ru/i/9RA8UxzByO9pOA\">Скачать</a>\n\n"
         
         "🎓 Бонус: шаблон резюме 1С-программиста\n"
         "📌 <a href=\"https://docs.google.com/document/d/1PBDUuAvIWb_IM9oBn7EnAbbC98tFq-6i_xA9k4f9PlM\">Скачать</a>\n\n"
