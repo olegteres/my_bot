@@ -139,8 +139,8 @@ async def howtopay(update: Update, context: ContextTypes.DEFAULT_TYPE):
         "💳 Карта (СБП / Visa / Mastercard) — просто отсканируйте QR-код ниже\n"
         "🫰 <a href=\"https://disk.yandex.ru/i/IrTlb3CTNBh3Zg\">Открыть QR-код</a>\n\n"
 
-        "💼 Счёт на ИП или юр.лицо\n"
-        "🌍 Зарубежные банки\n\n"
+        "💼 Счёт на ИП или юр.лицо — 👉 <a href=\"https://t.me/olegtereschenko1\">запросить</a>\n"
+        "🌍 Зарубежные банки — 👉 <a href=\"https://t.me/olegtereschenko1\">запросить</a>\n\n"
 
         "Если что-то не получается, напишите мне: 👉 <a href=\"https://t.me/olegtereschenko1\">в Telegram</a>\n"
         "↪️ Вернуться в главное меню — /start"
