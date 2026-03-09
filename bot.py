@@ -1,16 +1,14 @@
 import os
 
-from telegram import Update, InputFile
-from telegram.ext import Application, CommandHandler, ContextTypes
+from telegram import Update, InputFile, InlineKeyboardButton, InlineKeyboardMarkup
+from telegram.ext import Application, CommandHandler, ContextTypes, CallbackQueryHandler
 from telegram.constants import ParseMode
+
 
 
 # ----- /start -----
 async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
     name = update.effective_user.first_name or "друг"
-    start_param = None
-    if context.args:
-        start_param = context.args[0]
 
     text = (
         f"Добро пожаловать, {name}.\n\n"
@@ -161,11 +159,48 @@ async def gift(update: Update, context: ContextTypes.DEFAULT_TYPE):
         "↪️ /start"
     )
 
-    await update.message.reply_text(
+    keyboard = [
+    [InlineKeyboardButton("📘 Программа курса", callback_data="program")],
+    [InlineKeyboardButton("🎓 Ознакомительный урок", callback_data="lesson")],
+    [InlineKeyboardButton("💼 Тарифы и цены", callback_data="prices")],
+    [InlineKeyboardButton("❓ Подходит ли мне", callback_data="who")],
+    [InlineKeyboardButton("🔥 Как оплатить", callback_data="howtopay")],
+    [InlineKeyboardButton("🎁 Подарки", callback_data="gift")]
+]
+
+    reply_markup = InlineKeyboardMarkup(keyboard)
+
+    await update.effective_message.reply_text(
         text,
         parse_mode=ParseMode.HTML,
-        disable_web_page_preview=True
+        disable_web_page_preview=True,
+        reply_markup=reply_markup
     )
+
+
+async def buttons(update: Update, context: ContextTypes.DEFAULT_TYPE):
+    query = update.callback_query
+    await query.answer()
+
+    data = query.data
+
+    if data == "program":
+        await program(update, context)
+
+    elif data == "lesson":
+        await lesson(update, context)
+
+    elif data == "prices":
+        await prices(update, context)
+
+    elif data == "who":
+        await who(update, context)
+
+    elif data == "howtopay":
+        await howtopay(update, context)
+
+    elif data == "gift":
+        await gift(update, context)
 
 
 def main():
@@ -182,6 +217,8 @@ def main():
     app.add_handler(CommandHandler("who", who))
     app.add_handler(CommandHandler("howtopay", howtopay))
     app.add_handler(CommandHandler("gift", gift))
+
+    app.add_handler(CallbackQueryHandler(buttons))
 
     print("Бот запущен")
     app.run_polling()
