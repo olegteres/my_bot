@@ -5,9 +5,54 @@ from telegram.ext import Application, CommandHandler, ContextTypes, CallbackQuer
 from telegram.constants import ParseMode
 
 
+def menu_buttons(commands: list[str]):
+
+    buttons_map = {
+        "program": ("📘 Программа курса", "program"),
+        "lesson": ("🎓 Ознакомительный урок", "lesson"),
+        "prices": ("💼 Тарифы и цены", "prices"),
+        "who": ("❓ Подходит ли мне", "who"),
+        "howtopay": ("🔥 Как оплатить", "howtopay"),
+        "gift": ("🎁 Подарки", "gift"),
+        "start": ("↪️ Главное меню", "start"),
+    }
+
+    keyboard = [
+        [InlineKeyboardButton(*buttons_map[cmd])]
+        for cmd in commands
+    ]
+
+    return InlineKeyboardMarkup(keyboard)
+
+
+async def send_or_edit(update, text, reply_markup=None, preview=True):
+
+    if update.callback_query:
+        query = update.callback_query
+
+        try:
+            await query.edit_message_text(
+                text=text,
+                parse_mode=ParseMode.HTML,
+                disable_web_page_preview=not preview,
+                reply_markup=reply_markup
+            )
+        except Exception:
+            pass
+
+    elif update.message:
+        await update.message.reply_text(
+            text,
+            parse_mode=ParseMode.HTML,
+            disable_web_page_preview=not preview,
+            reply_markup=reply_markup
+        )
+        
+
 
 # ----- /start -----
 async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
+
     name = update.effective_user.first_name or "друг"
 
     text = (
@@ -29,26 +74,27 @@ async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
 
         "Нажмите кнопку ниже — за 2–3 минуты покажу чёткий пошаговый путь входа в 1С 👇\n\n"
 
-        "📘 Программа курса — /program\n"
-        "🎓 Ознакомительный урок — /lesson\n"
-        "💼 Тарифы и цены — /prices\n"
-        "❓ Подходит ли мне? — /who\n"
-        "🔥 Как оплатить — /howtopay\n"
-        "🎁 Подарочные материалы — /gift\n\n"
+        # "📘 Программа курса — /program\n"
+        # "🎓 Ознакомительный урок — /lesson\n"
+        # "💼 Тарифы и цены — /prices\n"
+        # "❓ Подходит ли мне? — /who\n"
+        # "🔥 Как оплатить — /howtopay\n"
+        # "🎁 Подарочные материалы — /gift\n\n"
 
         "Если нужно обратиться лично — "
         "<a href=\"https://t.me/olegtereschenko1\">напишите мне</a>."
     )
 
-    await update.message.reply_text(
+    await send_or_edit(
+        update,
         text,
-        parse_mode=ParseMode.HTML,
-        disable_web_page_preview=True
+        menu_buttons(["program","lesson","prices","who","howtopay","gift"])
     )
 
 
 # ----- /program -----
 async def program(update: Update, context: ContextTypes.DEFAULT_TYPE):
+       
     text = (
         "📘 <b>Программа курса</b>\n\n"
         "Вы изучите:\n"
@@ -61,13 +107,16 @@ async def program(update: Update, context: ContextTypes.DEFAULT_TYPE):
         "⏱ Длительность: 1–3 месяца в удобном темпе\n\n"
         "🎯 Итог: готовое резюме и навыки для работы на зарплату от 100 тыс./мес.\n\n"
         "📃 <a href=\"https://disk.yandex.ru/i/AXcGBPEQu97cbg\">Скачать программу</a>\n\n"
-        "👉 Ознакомительный урок — /lesson\n"
-        "🎁 Что отличает курс — /gift\n"
-        "↪️ Главное меню — /start"
+        # "👉 Ознакомительный урок — /lesson\n"
+        # "🎁 Что отличает курс — /gift\n"
+        # "↪️ Главное меню — /start"
     )
 
-    await update.message.reply_text(text, parse_mode=ParseMode.HTML)
-
+    await send_or_edit(
+        update,
+        text,
+        menu_buttons(["lesson","gift","start"])
+    )
 
 # ----- /lesson -----
 async def lesson(update: Update, context: ContextTypes.DEFAULT_TYPE):
@@ -77,15 +126,15 @@ async def lesson(update: Update, context: ContextTypes.DEFAULT_TYPE):
         "📌 <a href=\"https://youtu.be/pZnkZkJq7tA\">YouTube</a>\n"
         "📌 <a href=\"https://rutube.ru/video/private/bcc308d10fc258557c41604dbbc0a387/?p=ZLHy3HNpOq73GjbTx-CWng\">RuTube</a>\n"
         "📌 <a href=\"https://disk.yandex.ru/i/to_b-4Nr3EswJg\">Яндекс.Диск</a>\n\n"
-        "После просмотра — /program\n"
-        "↪️ Главное меню — /start"
+        # "После просмотра — /program\n"
+        # "↪️ Главное меню — /start"
     )
 
-    await update.message.reply_text(
-        text,
-        parse_mode=ParseMode.HTML,
-        disable_web_page_preview=True
-    )
+    await send_or_edit(
+    update,
+    text,
+    menu_buttons(["program","start"])
+)
 
 
 # ----- /prices -----
@@ -97,23 +146,26 @@ async def prices(update: Update, context: ContextTypes.DEFAULT_TYPE):
         "📖 Методички\n"
         "📝 Домашки без проверки\n"
         "💬 Чат + куратор\n\n"
-        "👉 Выбрать — /howtopay\n\n"
+        # "👉 Выбрать — /howtopay\n\n"
         "🎯 <b>Наставник</b> — 54 900 ₽\n"
         "✅ Проверка ДЗ\n"
         "💡 Рекомендации по коду\n"
         "📞 Созвоны\n"
         "💼 Портфолио и резюме\n\n"
-        "👉 Выбрать — /howtopay\n\n"
+        # "👉 Выбрать — /howtopay\n\n"
         "💎 <b>VIP</b> — 74 900 ₽\n"
         "👨‍🏫 Менторство 1:1\n"
         "🎯 Под вакансии\n"
         "📚 Сертификация\n\n"
-        "👉 Выбрать — /howtopay\n\n"
-        "↪️ Главное меню — /start"
+        # "👉 Выбрать — /howtopay\n\n"
+        # "↪️ Главное меню — /start"
     )
 
-    await update.message.reply_text(text, parse_mode=ParseMode.HTML)
-
+    await send_or_edit(
+    update,
+    text,
+    menu_buttons(["howtopay","start"])
+)
 
 # ----- /who -----
 async def who(update: Update, context: ContextTypes.DEFAULT_TYPE):
@@ -125,12 +177,15 @@ async def who(update: Update, context: ContextTypes.DEFAULT_TYPE):
         "😴 Тем, кто хочет сменить работу.\n"
         "🤖 Тем, кто хочет эффективно использовать ИИ.\n\n"
         "Если откликается — курс подходит.\n\n"
-        "👉 /prices\n"
-        "↪️ /start"
+        # "👉 /prices\n"
+        # "↪️ /start"
     )
 
-    await update.message.reply_text(text, parse_mode=ParseMode.HTML)
-
+    await send_or_edit(
+    update,
+    text,
+    menu_buttons(["prices","start"])
+)
 
 # ----- /howtopay -----
 async def howtopay(update: Update, context: ContextTypes.DEFAULT_TYPE):
@@ -140,11 +195,14 @@ async def howtopay(update: Update, context: ContextTypes.DEFAULT_TYPE):
         "🫰 <a href=\"https://disk.yandex.ru/i/IrTlb3CTNBh3Zg\">QR-код</a>\n\n"
         "💼 Счёт / зарубежные банки — "
         "<a href=\"https://t.me/olegtereschenko1\">написать</a>\n\n"
-        "↪️ /start"
+        # "↪️ /start"
     )
 
-    await update.message.reply_text(text, parse_mode=ParseMode.HTML)
-
+    await send_or_edit(
+    update,
+    text,
+    menu_buttons(["start"])
+)
 
 # ----- /gift -----
 async def gift(update: Update, context: ContextTypes.DEFAULT_TYPE):
@@ -156,51 +214,34 @@ async def gift(update: Update, context: ContextTypes.DEFAULT_TYPE):
         "<a href=\"https://disk.yandex.ru/i/sBwF93ineoTdyg\">Скачать</a>\n\n"
         "🤖 ИИ для работы:\n"
         "<a href=\"https://disk.yandex.ru/i/Ca5GHgSGjVK8Cw\">Скачать</a>\n\n"
-        "↪️ /start"
+        # "↪️ /start"
     )
 
-    keyboard = [
-    [InlineKeyboardButton("📘 Программа курса", callback_data="program")],
-    [InlineKeyboardButton("🎓 Ознакомительный урок", callback_data="lesson")],
-    [InlineKeyboardButton("💼 Тарифы и цены", callback_data="prices")],
-    [InlineKeyboardButton("❓ Подходит ли мне", callback_data="who")],
-    [InlineKeyboardButton("🔥 Как оплатить", callback_data="howtopay")],
-    [InlineKeyboardButton("🎁 Подарки", callback_data="gift")]
-]
+    await send_or_edit(
+    update,
+    text,
+    menu_buttons(["start"])
+)
 
-    reply_markup = InlineKeyboardMarkup(keyboard)
-
-    await update.effective_message.reply_text(
-        text,
-        parse_mode=ParseMode.HTML,
-        disable_web_page_preview=True,
-        reply_markup=reply_markup
-    )
 
 
 async def buttons(update: Update, context: ContextTypes.DEFAULT_TYPE):
     query = update.callback_query
     await query.answer()
 
-    data = query.data
+    handlers = {
+        "start": start,
+        "program": program,
+        "lesson": lesson,
+        "prices": prices,
+        "who": who,
+        "howtopay": howtopay,
+        "gift": gift,
+    }
 
-    if data == "program":
-        await program(update, context)
-
-    elif data == "lesson":
-        await lesson(update, context)
-
-    elif data == "prices":
-        await prices(update, context)
-
-    elif data == "who":
-        await who(update, context)
-
-    elif data == "howtopay":
-        await howtopay(update, context)
-
-    elif data == "gift":
-        await gift(update, context)
+    handler = handlers.get(query.data)
+    if handler:
+        await handler(update, context)
 
 
 def main():
