@@ -18,7 +18,12 @@ def menu_buttons(commands: list[str]):
     }
 
     keyboard = [
-        [InlineKeyboardButton(*buttons_map[cmd])]
+        [
+            InlineKeyboardButton(
+                text=buttons_map[cmd][0],
+                callback_data=buttons_map[cmd][1],
+            )
+        ]
         for cmd in commands
     ]
 
