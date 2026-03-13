@@ -8,6 +8,7 @@ from telegram.constants import ParseMode
 def menu_buttons(commands: list[str]):
 
     buttons_map = {
+        "contact": ("💬 Написать лично", "https://t.me/olegtereschenko1"),
         "program": ("📘 Программа курса", "program"),
         "lesson": ("🎓 Ознакомительный урок", "lesson"),
         "prices": ("💼 Тарифы и цены", "prices"),
@@ -27,7 +28,17 @@ def menu_buttons(commands: list[str]):
         for cmd in commands
     ]
 
-    return InlineKeyboardMarkup(keyboard)
+    keyboard = []
+
+    for cmd in commands:
+        text, action = buttons_map[cmd]
+
+        if action.startswith("http"):
+            button = InlineKeyboardButton(text=text, url=action)
+        else:
+            button = InlineKeyboardButton(text=text, callback_data=action)
+
+        keyboard.append([button])
 
 
 async def send_or_edit(update, text, reply_markup=None, preview=True):
@@ -85,9 +96,6 @@ async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
         # "❓ Подходит ли мне? — /who\n"
         # "🔥 Как оплатить — /howtopay\n"
         # "🎁 Подарочные материалы — /gift\n\n"
-
-        "Если нужно обратиться лично — "
-        "<a href=\"https://t.me/olegtereschenko1\">напишите мне</a>."
     )
 
     await send_or_edit(
