@@ -18,16 +18,6 @@ def menu_buttons(commands: list[str]):
         "start": ("↪️ Главное меню", "start"),
     }
 
-    keyboard = [
-        [
-            InlineKeyboardButton(
-                text=buttons_map[cmd][0],
-                callback_data=buttons_map[cmd][1],
-            )
-        ]
-        for cmd in commands
-    ]
-
     keyboard = []
 
     for cmd in commands:
@@ -39,6 +29,8 @@ def menu_buttons(commands: list[str]):
             button = InlineKeyboardButton(text=text, callback_data=action)
 
         keyboard.append([button])
+
+    return InlineKeyboardMarkup(keyboard)
 
 
 async def send_or_edit(update, text, reply_markup=None, preview=True):
@@ -122,8 +114,10 @@ async def program(update: Update, context: ContextTypes.DEFAULT_TYPE):
         menu_buttons(["lesson","gift","start"])
     )
 
+
 # ----- /lesson -----
 async def lesson(update: Update, context: ContextTypes.DEFAULT_TYPE):
+    
     text = (
         "🎓 <b>Ознакомительный урок</b>\n\n"
 
@@ -177,8 +171,10 @@ async def prices(update: Update, context: ContextTypes.DEFAULT_TYPE):
     menu_buttons(["howtopay","start"])
 )
 
+
 # ----- /who -----
 async def who(update: Update, context: ContextTypes.DEFAULT_TYPE):
+    
     text = (
         "❓ <b>Кому подходит мой курс?</b>\n\n"
 
@@ -197,8 +193,10 @@ async def who(update: Update, context: ContextTypes.DEFAULT_TYPE):
     menu_buttons(["prices","start"])
 )
 
+
 # ----- /howtopay -----
 async def howtopay(update: Update, context: ContextTypes.DEFAULT_TYPE):
+    
     text = (
         "🔥 <b>Как оплатить</b>\n\n"
 
@@ -215,8 +213,10 @@ async def howtopay(update: Update, context: ContextTypes.DEFAULT_TYPE):
     menu_buttons(["start"])
 )
 
+
 # ----- /gift -----
 async def gift(update: Update, context: ContextTypes.DEFAULT_TYPE):
+    
     text = (
         "🎁 <b>Подарочные материалы</b>\n\n"
 
@@ -235,7 +235,6 @@ async def gift(update: Update, context: ContextTypes.DEFAULT_TYPE):
     text,
     menu_buttons(["start"])
 )
-
 
 
 async def buttons(update: Update, context: ContextTypes.DEFAULT_TYPE):
