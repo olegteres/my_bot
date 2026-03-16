@@ -16,6 +16,10 @@ def menu_buttons(commands: list[str]):
         "howtopay": ("🔥 Как оплатить", "howtopay"),
         "gift": ("🎁 Подарки", "gift"),
         "start": ("↪️ Главное меню", "start"),
+        
+        "buy_basic": ("📗 Выбрать Самостоятельный — 34 900 ₽", "buy_basic"),
+        "buy_mentor": ("🎯 Выбрать Наставник — 54 900 ₽ ⭐", "buy_mentor"),
+        "buy_vip": ("💎 Выбрать VIP — 74 900 ₽", "buy_vip"),
     }
 
     keyboard = []
@@ -83,7 +87,7 @@ async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
     await send_or_edit(
         update,
         text,
-        menu_buttons(["program","lesson","prices","who","howtopay","gift"])
+        menu_buttons(["contact", "program", "lesson", "prices", "who", "howtopay", "gift"])
     )
 
 
@@ -168,7 +172,12 @@ async def prices(update: Update, context: ContextTypes.DEFAULT_TYPE):
     await send_or_edit(
     update,
     text,
-    menu_buttons(["howtopay","start"])
+    menu_buttons([
+        "buy_basic",
+        "buy_mentor",
+        "buy_vip",
+        "start"
+    ])
 )
 
 
@@ -190,7 +199,7 @@ async def who(update: Update, context: ContextTypes.DEFAULT_TYPE):
     await send_or_edit(
     update,
     text,
-    menu_buttons(["prices","start"])
+    menu_buttons(["prices", "start"])
 )
 
 
@@ -199,19 +208,24 @@ async def howtopay(update: Update, context: ContextTypes.DEFAULT_TYPE):
     
     text = (
         "🔥 <b>Как оплатить</b>\n\n"
+        
+        "Вы выбрали тариф курса.\n"
+        "✅ Оплатите <b>стоимость выбранного тарифа</b> любым способом ниже.\n\n"
 
         "💳 Карта / СБП\n"
         "🫰 <a href=\"https://disk.yandex.ru/i/IrTlb3CTNBh3Zg\">QR-код</a>\n\n"
 
         "💼 Счёт / зарубежные банки — "
         "<a href=\"https://t.me/olegtereschenko1\">написать</a>\n\n"
+        
+        "⚠️ После оплаты отправьте чек в личные сообщения."
     )
 
     await send_or_edit(
     update,
     text,
-    menu_buttons(["start"])
-)
+    menu_buttons(["contact", "start"])
+    )
 
 
 # ----- /gift -----
@@ -234,7 +248,7 @@ async def gift(update: Update, context: ContextTypes.DEFAULT_TYPE):
     update,
     text,
     menu_buttons(["start"])
-)
+    )
 
 
 async def buttons(update: Update, context: ContextTypes.DEFAULT_TYPE):
@@ -243,13 +257,17 @@ async def buttons(update: Update, context: ContextTypes.DEFAULT_TYPE):
     await query.answer()
 
     handlers = {
-        "start": start,
-        "program": program,
-        "lesson": lesson,
-        "prices": prices,
-        "who": who,
-        "howtopay": howtopay,
-        "gift": gift,
+    "start": start,
+    "program": program,
+    "lesson": lesson,
+    "prices": prices,
+    "who": who,
+    "howtopay": howtopay,
+    "gift": gift,
+
+    "buy_basic": howtopay,
+    "buy_mentor": howtopay,
+    "buy_vip": howtopay,
     }
 
     handler = handlers.get(query.data)
