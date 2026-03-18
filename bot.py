@@ -187,12 +187,12 @@ async def who(update: Update, context: ContextTypes.DEFAULT_TYPE):
     text = (
         "❓ <b>Кому подходит мой курс?</b>\n\n"
 
-        "👶 Новичкам в сфере айти\n"
-        "💻 Программистам из других языков\n"
+        "👶 Новичкам в сфере айти.\n"
+        "💻 Программистам из других языков.\n"
         "😴 Тем, кто хочет сменить работу.\n"
         "🛠 Освоить программирование без сложной математики.\n"
-        "🤑 Вам нужно зарабатывать намного больше, чем сейчас.\n"
-        "🤖 Тем, кто хочет эффективно использовать ИИ.\n\n"
+        "🤑 Тем, кто хочет зарабатывать намного больше, чем сейчас.\n"
+        "🤖 Желающим эффективно использовать ИИ.\n\n"
 
         "Если откликается — курс подходит.\n\n"
     )
@@ -210,8 +210,7 @@ async def howtopay(update: Update, context: ContextTypes.DEFAULT_TYPE):
     text = (
         "🔥 <b>Как оплатить</b>\n\n"
         
-        "Вы выбрали тариф курса.\n"
-        "✅ Оплатите <b>стоимость выбранного тарифа</b> любым способом ниже.\n\n"
+        "✅ Если вы выбрали тариф курса, оплатите <b>стоимость выбранного тарифа</b> любым способом ниже.\n\n"
 
         "💳 Карта / СБП\n"
         "🫰 <a href=\"https://disk.yandex.ru/i/IrTlb3CTNBh3Zg\">QR-код</a>\n\n"
@@ -225,7 +224,7 @@ async def howtopay(update: Update, context: ContextTypes.DEFAULT_TYPE):
     await send_or_edit(
     update,
     text,
-    menu_buttons(["contact", "start"])
+    menu_buttons(["contact", "prices", "start"])
     )
 
 
@@ -235,11 +234,11 @@ async def gift(update: Update, context: ContextTypes.DEFAULT_TYPE):
     text = (
         "🎁 <b>Подарочные материалы</b>\n\n"
 
-        "🎯 Привычка учиться:\n"
+        "🎯 Привычка учиться (навык гарантированного достижения цели):\n"
         "<a href=\"https://disk.yandex.ru/i/9RA8UxzByO9pOA\">Скачать</a>\n\n"
 
         "😶‍🌫️ VPN инструкция:\n"
-        "<a href=\"https://disk.yandex.ru/i/sBwF93ineoTdyg\">Скачать</a>\n\n"
+        "<a href=\"https://disk.yandex.ru/i/A2RxHrPoiy9C-A\">Скачать</a>\n\n"
 
         "🤖 ИИ для работы:\n"
         "<a href=\"https://disk.yandex.ru/i/Ca5GHgSGjVK8Cw\">Скачать</a>\n\n"
